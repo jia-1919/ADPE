@@ -1,7 +1,5 @@
 # ADPE
 
-基于 [TAP](https://github.com/HHenryD/TAP) 的属性分支 Dropout 与 Batch-LOO AA-DPE 实现。
-
 ## 安装
 
 使用 Python 3.9 和 NVIDIA GPU，在项目根目录执行：
