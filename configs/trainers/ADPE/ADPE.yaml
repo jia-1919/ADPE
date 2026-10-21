@@ -1,0 +1,72 @@
+# Shared defaults for ADPE training and Batch-LOO attribute-aware DPE evaluation.
+TRAINER:
+  NAME: "ADPE"
+  ADPE:
+    PREC: "fp32"
+
+DATALOADER:
+  TRAIN_X:
+    BATCH_SIZE: 32
+  TEST:
+    BATCH_SIZE: 100
+  NUM_WORKERS: 8
+
+INPUT:
+  SIZE: [224, 224]
+  INTERPOLATION: "bicubic"
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  TRANSFORMS: ["random_resized_crop", "random_flip", "normalize"]
+
+OPTIM:
+  NAME: "adamw"
+  LR_SCHEDULER: "cosine"
+  WARMUP_EPOCH: 1
+  WARMUP_TYPE: "constant"
+  WARMUP_CONS_LR: 0.00001
+  VISION_MAX_EPOCH: 50
+  TEXT_MAX_EPOCH: 10
+  VISION_LR: 0.004
+  TEXT_LR: 0.004
+
+TRAIN:
+  PRINT_FREQ: 5
+
+TEST:
+  FINAL_MODEL: "last_step"
+
+MODEL:
+  BACKBONE:
+    NAME: "ViT-B/16"
+  ADPE:
+    DEEP: True
+    DROPOUT: 0.0
+    U1: 10.0
+    U2: 2.5
+    U3: 1.5
+    ALPHA: 0.4
+    V2T_ALTERNATING_EPOCHS: 5
+    T2V_ALTERNATING_EPOCHS: 1
+    STARTING_PHASE: "train_vision"
+    GPA_MEAN: 0.9
+    GPA_STD: 0.2
+    MAX_LEN_QUANTILE: 1.0
+    ATTR_BRANCH_DROPOUT_P: 0.15
+    ATTR_BRANCH_DROPOUT_RESCALE: False
+    ATTR_DROPOUT_FUSION_CE_WEIGHT: 0.5
+    DESCRIPTIONS_PATH: ""
+    DESCRIPTION_SOURCE_DATASET: ""
+    ATTR_ORDER: ""
+    ATTR_COUNT: 0
+    POOLING:
+      NORM: "normto1"
+    DPE:
+      ENABLED: True
+      SHOT_CAPACITY: 3
+      ALPHA: 6.0
+      BETA: 5.0
+      TEXT_LR: 0.0006
+      IMAGE_LR: 0.0006
+      ALIGN: 0.5
+      ENTROPY_THRESHOLD: 0.1  # Legacy compatibility; Top-K cache uses entropy ranking.
+      ATTR_AFFINITY_WEIGHT: 0.4

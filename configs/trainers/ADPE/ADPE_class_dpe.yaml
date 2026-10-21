@@ -1,0 +1,6 @@
+# Class-only Batch-LOO DPE ablation. train.py loads ADPE.yaml first.
+MODEL:
+  ADPE:
+    DPE:
+      ENABLED: True
+      ATTR_AFFINITY_WEIGHT: 0.0
